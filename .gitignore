@@ -1,0 +1,14 @@
+# Editor
+.vscode/
+
+# macOS
+.DS_Store
+
+# Build output (clang++ -g writes <name> and <name>.dSYM next to the source)
+solution
+*.dSYM/
+*.o
+*.out
+
+# don't publish puzzle inputs
+input_part_*.txt
