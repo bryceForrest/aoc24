@@ -14,6 +14,10 @@ and a `python` script to scrape the problem descriptions
 ```
 python get_prompt.py --year 2024 --day XX
 ```
+and just use file redirection to write the per-day README.md
+```
+python get_prompt.py --year 2024 --day XX > dayXX/README.md
+```
 
 ### Dependencies
 The solutions just use the `std` library.
