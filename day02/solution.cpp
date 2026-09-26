@@ -17,7 +17,6 @@
 using input_t = std::vector<std::vector<int>>;
 
 input_t parse(std::istream& in);
-std::ostream& operator<<(std::ostream& os, const input_t& in);
 int sign(int x);
 bool is_safe(int diff, int prev_diff);
 int64_t part1(std::istream& in);
@@ -67,18 +66,6 @@ input_t parse(std::istream& in) {
   }
 
   return grid;
-}
-
-std::ostream& operator<<(std::ostream& os, const input_t& in) {
-  for (auto row : in) {
-    std::string delim = "";
-    for (auto val : row) {
-      os << delim << val;
-      delim = " ";
-    }
-    os << std::endl;
-  }
-  return os;
 }
 
 int sign(int x) {
