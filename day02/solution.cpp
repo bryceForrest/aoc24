@@ -141,7 +141,8 @@ bool part2_helper(const std::vector<int>& row, const size_t& index,
     return true;
   }
 
-  // pretend row[index] isn't here, only if we haven't before
+  // counterfactual, what if this index wasn't here? only if we haven't done a
+  // different counterfactual before
   if (!is_counterfactual &&
       part2_helper(row, index + 1, prev_index, prev_diff, true)) {
     return true;
@@ -161,5 +162,4 @@ bool part2_helper(const std::vector<int>& row, const size_t& index,
   }
 
   return part2_helper(row, index + 1, index, diff, is_counterfactual);
-  ;
 }
