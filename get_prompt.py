@@ -10,10 +10,7 @@ dotenv.load_dotenv()
 def parse(url):
     cookies = {"session": os.getenv("SESSION_ID")}
     response = requests.get(url, cookies=cookies)
-
-    # 2. Parse the HTML using the built-in 'html.parser'
     soup = BeautifulSoup(response.text, "html.parser")
-
     descs = soup.find_all("article", class_="day-desc")
 
     print(descs[0])
@@ -34,7 +31,6 @@ def main():
         help="The year to retrieve (default: 2024)",
     )
 
-    # 3. Parse the arguments
     args = parser.parse_args()
     url = f"https://adventofcode.com/{args.year}/day/{args.day}"
 
