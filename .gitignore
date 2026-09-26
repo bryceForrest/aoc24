@@ -12,3 +12,6 @@ solution
 
 # don't publish puzzle inputs
 input_part_*.txt
+
+# secrets
+.env
