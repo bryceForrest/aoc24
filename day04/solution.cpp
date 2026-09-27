@@ -116,6 +116,10 @@ int64_t part1(std::istream& in) {
 int64_t part2(std::istream& in) {
   input_t input = parse(in);
   int64_t result = 0;
+  // we now only need to check diagonal directions
+  // I think the easiest thing to do is to just track the center 'A' position
+  // of each "MAS" found ... then at the end just see how many of those
+  // coordinates are counted twice.
 
   return result;
 }
