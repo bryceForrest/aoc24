@@ -18,6 +18,8 @@ using row_t = std::vector<char>;
 using input_t = std::vector<row_t>;
 
 input_t parse(std::istream& in);
+char safe_index(const input_t& input, const int& i, const int& j);
+int64_t traverse(const input_t& input, const size_t& i, const size_t& j);
 int64_t part1(std::istream& in);
 int64_t part2(std::istream& in);
 
@@ -60,9 +62,53 @@ input_t parse(std::istream& in) {
   return rows;
 }
 
+char safe_index(const input_t& input, const int& i, const int& j) {
+  size_t n = input.size();
+  size_t m = input[0].size();
+  char ch;
+
+  if (i < 0 || i >= n || j < 0 || j >= m) {
+    ch = '\0';
+  } else {
+    ch = input[i][j];
+  }
+
+  return ch;
+}
+
+int64_t traverse(const input_t& input, const size_t& i, const size_t& j) {
+  const std::string target = "XMAS";
+  const int directions[8][2] = {{0, 1},  {1, 1},   {1, 0},  {1, -1},
+                                {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+  int64_t found = 0;
+
+  for (auto& direction : directions) {
+    bool possible = true;
+    std::string word;
+
+    for (int k = 0; k < 4 && possible; k++) {
+      int step[2] = {direction[0] * k, direction[1] * k};
+      word += safe_index(input, static_cast<int>(i) + step[0],
+                         static_cast<int>(j) + step[1]);
+      possible = word == target.substr(0, word.size());
+    }
+
+    found += static_cast<int>(word == target);
+  }
+
+  return found;
+}
+
 int64_t part1(std::istream& in) {
   input_t input = parse(in);
   int64_t result = 0;
+
+  for (size_t i = 0; i < input.size(); i++) {
+    row_t row = input[i];
+    for (size_t j = 0; j < row.size(); j++) {
+      result += traverse(input, i, j);
+    }
+  }
 
   return result;
 }
