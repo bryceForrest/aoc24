@@ -15,8 +15,7 @@
 #include <utility>
 #include <vector>
 
-using rule_t = std::pair<size_t, size_t>;
-using rules_t = std::vector<rule_t>;
+using rules_t = std::unordered_map<size_t, std::set<size_t>>;
 using edit_t = std::vector<size_t>;
 using edits_t = std::vector<edit_t>;
 
@@ -30,8 +29,7 @@ struct input_t {
       const std::smatch& match = *it;
 
       if (match[1].matched) {
-        rule_t rule{std::stoi(match[2]), std::stoi(match[3])};
-        rules.push_back(rule);
+        rules[std::stoi(match[2])].insert(std::stoi(match[3]));
       } else if (match[4].matched) {
         std::stringstream ss(match[4].str());
         edit_t edit;
@@ -90,6 +88,33 @@ input_t parse(std::istream& in) {
 int64_t part1(std::istream& in) {
   input_t input = parse(in);
   int64_t result = 0;
+
+  for (auto& edit : input.edits) {
+    std::unordered_map<size_t, size_t> visited;
+    bool valid = true;
+    size_t midpoint = edit.size() / 2;
+    size_t mid_page = 0;
+
+    for (size_t i = 0; i < edit.size() && valid; i++) {
+      size_t page = edit[i];
+
+      for (auto& disallowed_page : input.rules[page]) {
+        if (visited.count(disallowed_page)) {
+          valid = false;
+        }
+      }
+
+      if (i == midpoint) {
+        mid_page = page;
+      }
+
+      visited[page]++;
+    }
+
+    if (valid) {
+      result += mid_page;
+    }
+  }
 
   return result;
 }
