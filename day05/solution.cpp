@@ -48,6 +48,23 @@ struct input_t {
   edits_t edits;
 };
 
+struct rules_sort {
+  rules_sort(rules_t input_rules)
+      : rules(input_rules) {}  // Constructor to accept state
+
+  bool operator()(size_t a, size_t b) const {
+    bool result = false;
+
+    if (rules.count(a)) {
+      result = static_cast<bool>(rules.at(a).count(b));
+    }
+
+    return result;
+  }
+
+  rules_t rules;
+};
+
 input_t parse(std::istream& in);
 int64_t part1(std::istream& in);
 int64_t part2(std::istream& in);
@@ -122,6 +139,15 @@ int64_t part1(std::istream& in) {
 int64_t part2(std::istream& in) {
   input_t input = parse(in);
   int64_t result = 0;
+
+  for (auto& edit : input.edits) {
+    if (!std::is_sorted(edit.begin(), edit.end(), rules_sort(input.rules))) {
+      size_t midpoint = edit.size() / 2;
+      std::sort(edit.begin(), edit.end(), rules_sort(input.rules));
+
+      result += edit[midpoint];
+    }
+  }
 
   return result;
 }
